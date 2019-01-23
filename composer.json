@@ -1,0 +1,42 @@
+{
+    "name": "mathewparet/laravelinvites",
+    "description": ":description",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mathew Paret",
+            "email": "mathewparet@gmail.com"
+        }
+    ],
+    "homepage": "https://github.com/mathewparet/laravel-invites",
+    "keywords": ["Laravel", "LaravelInvites"],
+    "require": {
+        "illuminate/support": "~5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~7.0",
+        "mockery/mockery": "^1.1",
+        "orchestra/testbench": "~3.0",
+        "sempro/phpunit-pretty-print": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "mathewparet\\LaravelInvites\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "mathewparet\\LaravelInvites\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "mathewparet\\LaravelInvites\\LaravelInvitesServiceProvider"
+            ],
+            "aliases": {
+                "LaravelInvites": "mathewparet\\LaravelInvites\\Facades\\LaravelInvites"
+            }
+        }
+    }
+}

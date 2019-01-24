@@ -36,8 +36,11 @@ class LaravelInvites
         $this->initializeData();
     }
 
-    public function for($email)
+    public function for($email=null)
     {
+        if(!$email)
+            return $this;
+
         $validator = Validator::make(compact('email'),[
             'email'=>'required|email'
         ]);
@@ -202,12 +205,33 @@ class LaravelInvites
     }
 
     /**
+     * Check whether an invitation is valid with the provided email
+     * 
+     * @param string $code
+     * @param string $email to be checked against
+     */
+
+    public function isValid($code, $email = null)
+    {
+        try
+        {
+            $this->check($code, $email);
+
+            return true;
+        }
+        catch(\Exception $e)
+        {
+            return false;
+        }
+    }
+
+    /**
      * Check the validity of the invitiation code
      * 
      * @param string $code
      * @param string $email
      */
-    public function check($code, $email=null)
+    private function check($code, $email=null)
     {
         $invite = Invite::whereCode($code)->first();
 
@@ -245,5 +269,16 @@ class LaravelInvites
         $this->find($code)->redeem();
 
         return true;
+    }
+
+    /**
+     * Set a validity start date for the invitation
+     * 
+     * @param \Carbon\Carbon $date
+     */
+    public function notBefore(Carbon $date)
+    {
+        $this->data['valid_from'] = $date;
+        return $this;
     }
 }

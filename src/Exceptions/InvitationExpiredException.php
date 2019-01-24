@@ -2,9 +2,12 @@
 
 namespace mathewparet\LaravelInvites\Exceptions;
 
-use Exception;
+use mathewparet\LaravelInvites\Exceptions\LaravelInvitesException;
 
-class InvitationExpiredException extends Exception
+class InvitationExpiredException extends LaravelInvitesException
 {
-    //
+    public function __construct($date)
+    {
+        parent::__construct("The code expired at $date");
+    }
 }

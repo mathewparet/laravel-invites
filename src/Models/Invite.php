@@ -32,6 +32,13 @@ class Invite extends Model
         $this->save();
     }
 
+    public function scopeValid($query)
+    {
+        return $query->where('valid_from','<=', now())
+            ->where('valid_upto', '>=', now())
+            ->whereRaw('allowed_count > used_count');
+    }
+
     /**
      * Set default expiry as per configuration
      */

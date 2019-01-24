@@ -3,6 +3,7 @@
 namespace mathewparet\LaravelInvites;
 
 use mathewparet\LaravelInvites\LaravelInvites;
+use mathewparet\LaravelInvites\Commands\GenerateInvitations;
 
 use Illuminate\Support\ServiceProvider;
 use Validator;
@@ -82,6 +83,6 @@ class LaravelInvitesServiceProvider extends ServiceProvider
         ], 'laravelinvites.views');*/
 
         // Registering package commands.
-        // $this->commands([]);
+        $this->commands([GenerateInvitations::class]);
     }
 }

@@ -2,6 +2,8 @@
 
 namespace mathewparet\LaravelInvites\Commands;
 
+use mathewparet\LaravelInvites\Facades\LaravelInvites;
+
 use Illuminate\Console\Command;
 
 class GenerateInvitations extends Command
@@ -11,7 +13,11 @@ class GenerateInvitations extends Command
      *
      * @var string
      */
-    protected $signature = 'invites:generate';
+    protected $signature = 'invites:generate {email?} 
+        {--a|allow=1 : Number of times the code can be used} 
+        {--c|count=1 : The number of codes to be generated}
+        {--d|days= : The number of days until expiry (preceeds hours option)}
+        {--r|hours= : Number of hours until expiry}';
 
     /**
      * The console command description.
@@ -37,6 +43,21 @@ class GenerateInvitations extends Command
      */
     public function handle()
     {
-        //
+        $email = $this->argument('email') ? : null;
+        $allow = $this->option('allow');
+        $count = $this->option('count');
+        $hours = $this->option('hours');
+        $days = $this->option('days');
+
+        $invite = LaravelInvites::for($email)->allow($allow);
+
+        if($days)
+            $invite->setExpiry(now()->addDays($days));
+        else if($hours)
+            $invite->setExpiry(now()->addHours($hours));
+
+        $invite->generate($count);
+
+        $this->info($count." invitations generated.");
     }
 }

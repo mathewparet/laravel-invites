@@ -28,8 +28,12 @@ class LaravelInvitesServiceProvider extends ServiceProvider
         }
 
         $this->publishes([
-            __DIR__.'/../config/laravelinvites.php' => config_path('laravelinvites.php')
-        ]);
+            __DIR__.'/../config/laravelinvites.php' => config_path('laravelinvites.php'),
+        ], 'config');
+
+        $this->publishes([
+            __DIR__.'/Views/Mail/InvitationMailMarkdown.blade.php' => base_path('resources/views/Mail/InvitationMailMarkdown.blade.php'),
+        ], 'mail');
 
         Validator::extend('valid_code', 'LaravelInvites@validate', ':attribute is invalid.');
     }

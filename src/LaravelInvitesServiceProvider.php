@@ -5,6 +5,7 @@ namespace mathewparet\LaravelInvites;
 use mathewparet\LaravelInvites\LaravelInvites;
 use mathewparet\LaravelInvites\Commands\GenerateInvitations;
 use mathewparet\LaravelInvites\Commands\CheckInvitation;
+use mathewparet\LaravelInvites\Commands\Cleanup;
 
 use Illuminate\Support\ServiceProvider;
 use Validator;
@@ -79,6 +80,7 @@ class LaravelInvitesServiceProvider extends ServiceProvider
         $this->commands([
             GenerateInvitations::class,
             CheckInvitation::class,
+            Cleanup::class,
         ]);
     }
 }

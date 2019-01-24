@@ -11,6 +11,13 @@ class Invite extends Model
         'email', 'allowed_count', 'valid_upto', 'valid_from'
     ];
 
+    protected $dates = ['valid_from', 'valid_upto'];
+
+    public function setEmailAttribute($value)
+    {
+        $this->attributes['email'] = strtolower($value);
+    }
+
     public function __construct(array $attributes = [])
     {
 
@@ -28,8 +35,10 @@ class Invite extends Model
 
     public function redeem()
     {
-        $this->used_count ++;
-        $this->save();
+        $this->increment('used_count');
+
+        if($this->used_count >= $this->allowed_count && config('laravelinvites.delete_on_full', true))
+            $this->delete();
     }
 
     public function scopeValid($query)
@@ -37,6 +46,12 @@ class Invite extends Model
         return $query->where('valid_from','<=', now())
             ->where('valid_upto', '>=', now())
             ->whereRaw('allowed_count > used_count');
+    }
+
+    public function scopeUseless($query)
+    {
+        return $query->where('valid_upto', '<', now())
+            ->orWhereRaw('allowed_count <= used_count');
     }
 
     /**

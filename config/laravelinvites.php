@@ -9,6 +9,15 @@ return [
      * the invites.
      */
     'table' => 'invites',
+
+    /**
+     * ---------------------------------------------
+     * delete_on_full
+     * ---------------------------------------------
+     * If true, an invite will be automatically 
+     * deleted when its max usage is reached.
+     */
+    'delete_on_full' => true,
     'expiry' => [
         /**
          * -----------------------------------------------

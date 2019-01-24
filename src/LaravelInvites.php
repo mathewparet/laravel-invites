@@ -119,7 +119,7 @@ class LaravelInvites
      */
     public function generate($number_of_invites = 1)
     {
-        if(!blank($this->data['email']))
+        if(optional($this->data)['email'] && !blank($this->data['email']))
         {
             if($number_of_invites > 1)
                 throw new AnEmailCanHaveOnlyOneInvitation;
@@ -205,10 +205,14 @@ class LaravelInvites
         return Invite::whereCode($code)->firstOrFail();
     }
 
+    private function getEmailParameter($parameters)
+    {
+        return $parameters[0] ? : 'email' ;
+    }
     
     public function validate($attribute, $value, $parameters, $validator)
     {
-        $emailFieldName = $parameters[0] ? : 'email';
+        $emailFieldName = $this->getEmailParameter($parameters);
 
         try {        
             $email = $validator->data[$emailFieldName];

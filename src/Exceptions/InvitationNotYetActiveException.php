@@ -2,9 +2,12 @@
 
 namespace mathewparet\LaravelInvites\Exceptions;
 
-use Exception;
+use mathewparet\LaravelInvites\Exceptions\LaravelInvitesException;
 
-class InvitationNotYetActiveException extends Exception
+class InvitationNotYetActiveException extends LaravelInvitesException
 {
-    //
+    public function __construct($date)
+    {
+        parent::__construct("The code will be active only from $date");
+    }
 }

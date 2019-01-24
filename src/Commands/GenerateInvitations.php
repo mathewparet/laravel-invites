@@ -56,7 +56,7 @@ class GenerateInvitations extends Command
         else if($hours)
             $invite->setExpiry(now()->addHours($hours));
 
-        $invite->generate($count);
+        $invites = $invite->generate($count);
 
         $this->info($count." invitations generated.");
     }

@@ -36,10 +36,25 @@ class LaravelInvites
         $this->initializeData();
     }
 
+    public function get($fields)
+    {
+        if(!blank(optional($this->data)['email']))
+            $result =  Invite::valid()->whereEmail($this->data['email'])->first();
+        else
+            $result = Invite::valid()->get();
+
+        $this->initializeData();
+
+        return $result;
+    }
+
     public function for($email=null)
     {
         if(!$email)
+        {
+            unset($this->data['email']);
             return $this;
+        }
 
         $validator = Validator::make(compact('email'),[
             'email'=>'required|email'
@@ -231,7 +246,7 @@ class LaravelInvites
      * @param string $code
      * @param string $email
      */
-    private function check($code, $email=null)
+    public function check($code, $email=null)
     {
         $invite = Invite::whereCode($code)->first();
 
@@ -239,16 +254,16 @@ class LaravelInvites
             throw new InvalidInvitationCodeException;
         
         if($invite->valid_from > now())
-            throw new InvitationNotYetActiveException;
+            throw new InvitationNotYetActiveException($invite->valid_from);
 
         if($invite->valid_upto && $invite->valid_upto <= now())
-            throw new InvitationExpiredException;
+            throw new InvitationExpiredException($invite->valid_upto);
 
         if($invite->used_count > ($invite->allowed_count-1))
-            throw new MaximumUseOfCodeException;
+            throw new MaximumUseOfCodeException($invite->allowed_count);
 
         if($invite->email !== $email && !blank($invite->email))
-            throw new InvitationNotValidWithEmailException;
+            throw new InvitationNotValidWithEmailException($email, $invite->email);
 
         return true;
     }

@@ -18,15 +18,18 @@ class LaravelInvitesServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // $this->loadTranslationsFrom(__DIR__.'/../resources/lang', 'mathewparet');
-        // $this->loadViewsFrom(__DIR__.'/../resources/views', 'mathewparet');
         $this->loadMigrationsFrom(__DIR__.'/database/migrations');
-        // $this->loadRoutesFrom(__DIR__.'/routes.php');
+        $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
+        $this->loadViewsFrom(__DIR__.'/Views', 'laravelinvites');
 
         // Publishing is only necessary when using the CLI.
         if ($this->app->runningInConsole()) {
             $this->bootForConsole();
         }
+
+        $this->publishes([
+            __DIR__.'/../config/laravelinvites.php' => config_path('laravelinvites.php')
+        ]);
 
         Validator::extend('valid_code', 'LaravelInvites@validate', ':attribute is invalid.');
     }
@@ -67,21 +70,6 @@ class LaravelInvitesServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../config/laravelinvites.php' => config_path('laravelinvites.php'),
         ], 'config');
-
-        // Publishing the views.
-        /*$this->publishes([
-            __DIR__.'/../resources/views' => base_path('resources/views/vendor/mathewparet'),
-        ], 'laravelinvites.views');*/
-
-        // Publishing assets.
-        /*$this->publishes([
-            __DIR__.'/../resources/assets' => public_path('vendor/mathewparet'),
-        ], 'laravelinvites.views');*/
-
-        // Publishing the translation files.
-        /*$this->publishes([
-            __DIR__.'/../resources/lang' => resource_path('lang/vendor/mathewparet'),
-        ], 'laravelinvites.views');*/
 
         // Registering package commands.
         $this->commands([

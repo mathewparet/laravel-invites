@@ -8,6 +8,12 @@ use mathewparet\LaravelInvites\Exceptions\InvitationNotYetActiveException;
 use mathewparet\LaravelInvites\Exceptions\InvitationExpiredException;
 use mathewparet\LaravelInvites\Exceptions\InvitationNotValidWithEmailException;
 use mathewparet\LaravelInvites\Exceptions\MaximumUseOfCodeException;
+use mathewparet\LaravelInvites\Exceptions\LaravelInvitesException;
+use mathewparet\LaravelInvites\Exceptions\AnEmailCanHaveOnlyOneInvitation;
+
+use mathewparet\LaravelInvites\Mail\InvitationMail;
+
+use Illuminate\Support\Facades\Mail;
 
 use Carbon\Carbon;
 use Validator;
@@ -36,7 +42,7 @@ class LaravelInvites
         $this->initializeData();
     }
 
-    public function get($fields)
+    public function get()
     {
         if(!blank(optional($this->data)['email']))
             $result =  Invite::valid()->whereEmail($this->data['email'])->first();
@@ -69,7 +75,12 @@ class LaravelInvites
 
     private function prepareSingle()
     {
-        return Invite::create($this->data);
+        $invite = Invite::create($this->data);
+
+        if($invite->email && config('laravelinvites.mail.enabled', true))
+            Mail::to($invite->email)->send(new InvitationMail($invite));
+
+        return $invite;
     }
 
     public function validFrom($date = null)
@@ -108,6 +119,19 @@ class LaravelInvites
      */
     public function generate($number_of_invites = 1)
     {
+        if(!blank($this->data['email']))
+        {
+            if($number_of_invites > 1)
+                throw new AnEmailCanHaveOnlyOneInvitation;
+
+            $validator = Validator::make($this->data,[
+                'email'=>'unique:'.config('laravelinvites.table').',email'
+            ]);
+
+            if($validator->fails())
+                throw new AnEmailCanHaveOnlyOneInvitation;
+        }
+
         $this->number_of_invites = $number_of_invites;
 
         $invitations =  $this->prepare();
@@ -234,7 +258,7 @@ class LaravelInvites
 
             return true;
         }
-        catch(\Exception $e)
+        catch(LaravelInvitesException $e)
         {
             return false;
         }
@@ -296,4 +320,5 @@ class LaravelInvites
         $this->data['valid_from'] = $date;
         return $this;
     }
+
 }

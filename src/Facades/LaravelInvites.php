@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Facade;
 class LaravelInvites extends Facade
 {
     /**
-     * @method boolean check(string $code, string $email = null) Check the validity of the invitiation code
      * @method mixed get() Get the invites from DB
      * @method \mathewparet\LaravelInvites\Facades\LaravelInvites for(string $email) Set the email property for generating or getting invitation
      * @method \mathewparet\LaravelInvites\Facades\LaravelInvites validFrom(\Carbon\Carbon $date) Get the validity start date for the invitation

@@ -49,7 +49,7 @@ class LaravelInvitesServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(__DIR__.'/../config/laravelinvites.php', 'laravelinvites');
 
         // Register the service the package provides.
-        $this->app->singleton('laravelinvites', function (/** @scrutinizer ignore-unused */ $app) {
+        $this->app->singleton('laravelinvites', function(/** @scrutinizer ignore-unused */ $app) {
             return new LaravelInvites;
         });
     }

@@ -104,7 +104,7 @@ class LaravelInvites
      * @param \Carbon\Carbon $date
      * @return \mathewparet\LaravelInvites\Facades\LaravelInvites
      */
-    public function validFrom(Carbon $data)
+    public function validFrom(Carbon $date)
     {
         $this->data['valid_from'] = $date ? : now();
 
@@ -134,9 +134,11 @@ class LaravelInvites
     /**
      * Validate email ID before generating invitation code
      * 
+     * @param integer $number_of_invites
+     * 
      * @throws \mathewparet\LaravelInvites\Exceptions\AnEmailCanHaveOnlyOneInvitation
      */
-    private function validateEmailBeforeGeneration()
+    private function validateEmailBeforeGeneration($number_of_invites = 1)
     {
         if(optional($this->data)['email'] && !blank($this->data['email']))
         {
@@ -161,7 +163,7 @@ class LaravelInvites
      */
     public function generate($number_of_invites = 1)
     {
-        $this->validateEmailBeforeGeneration();
+        $this->validateEmailBeforeGeneration($number_of_invites);
 
         $this->number_of_invites = $number_of_invites;
 
@@ -261,14 +263,14 @@ class LaravelInvites
      * 
      * @throws \mathewparet\LaravelInvites\Exceptions\LaravelInvitesException
      */
-    public function validate($attribute, $value, $parameters, $validator)
+    public function validate(/** @scrutinizer ignore-unused */ $attribute, /** @scrutinizer ignore-unused */ $value, $parameters, $validator)
     {
         $emailFieldName = $this->getEmailParameter($parameters);
 
         try {        
             $email = $validator->data[$emailFieldName];
 
-            $this->check($code, $email);
+            $this->check($value, $email);
             return true;
         }
         catch(InvalidInvitationCodeException $e)

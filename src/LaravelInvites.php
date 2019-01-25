@@ -65,7 +65,7 @@ class LaravelInvites
      * 
      * @return \mathewparet\LaravelInvites\Facades\LaravelInvites
      */
-    public function for ($email = null)
+    public function for($email = null)
     {
         if (!$email)
         {
@@ -387,8 +387,7 @@ class LaravelInvites
      */
     public function notBefore(Carbon $date)
     {
-        $this->data['valid_from'] = $date;
-        return $this;
+        return $this->validFrom($date);
     }
 
 }

@@ -32,4 +32,5 @@ class LaravelInvites extends Facade
     {
         return 'laravelinvites';
     }
+
 }

@@ -282,23 +282,23 @@ class LaravelInvites
             return true;
         } catch (InvalidInvitationCodeException $e)
         {
-            $validator->errors()->add($emailFieldName, ':attribute is invalid');
+            $validator->errors()->add($attribute, 'Invalid invitation code');
             return false;
         } catch (InvitationNotYetActiveException $e)
         {
-            $validator->errors()->add($emailFieldName, ':attribute is not valid yet');
+            $validator->errors()->add($attribute, 'Invitation code is not valid yet');
             return false;
         } catch (InvitationExpiredException $e)
         {
-            $validator->errors()->add($emailFieldName, ':attribute expired');
+            $validator->errors()->add($attribute, 'Invitation expired');
             return false;
         } catch (InvitationNotValidWithEmailException $e)
         {
-            $validator->errors()->add($emailFieldName, ':attribute is not valid with the provided '.$emailFieldName);
+            $validator->errors()->add($attribute, 'Invitation code is not valid with the provided '.$emailFieldName);
             return false;
         } catch (MaximumUseOfCodeException $e)
         {
-            $validator->errors()->add($emailFieldName, ':attribute has been used for the maximum possible times');
+            $validator->errors()->add($attribute, 'Invitation code has been used for the maximum possible times');
             return false;
         }
     }

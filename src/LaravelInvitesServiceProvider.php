@@ -36,7 +36,7 @@ class LaravelInvitesServiceProvider extends ServiceProvider
             __DIR__.'/Views/Mail/InvitationMailMarkdown.blade.php' => base_path('resources/views/Mail/InvitationMailMarkdown.blade.php'),
         ], 'mail');
 
-        Validator::extend('valid_code', 'LaravelInvites@validate', ':attribute is invalid.');
+        Validator::extend('valid_code', LaravelInvites::class.'@validate', 'The :attribute is invalid.');
     }
 
     /**

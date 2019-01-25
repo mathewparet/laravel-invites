@@ -106,7 +106,7 @@ class LaravelInvites
      */
     public function validFrom(Carbon $date)
     {
-        $this->data['valid_from'] = $date ? : now();
+        $this->data['valid_from'] = $date;
 
         return $this;
     }

@@ -47,8 +47,8 @@ class LaravelInvites
      */
     public function get()
     {
-        if(!blank(optional($this->data)['email']))
-            $result =  Invite::valid()->whereEmail($this->data['email'])->first();
+        if (!blank(optional($this->data)['email']))
+            $result = Invite::valid()->whereEmail($this->data['email'])->first();
         else
             $result = Invite::valid()->get();
 
@@ -64,18 +64,18 @@ class LaravelInvites
      * 
      * @return \mathewparet\LaravelInvites\Facades\LaravelInvites
      */
-    public function for($email=null)
+    public function for ($email = null)
     {
-        if(!$email)
+        if (!$email)
         {
             unset($this->data['email']);
             return $this;
         }
 
-        $validator = Validator::make(compact('email'),[
+        $validator = Validator::make(compact('email'), [
             'email'=>'required|email'
         ]);
-        if($validator->fails())
+        if ($validator->fails())
             throw new InvalidEmailIdException;
 
         $this->data['email'] = $email;
@@ -92,7 +92,7 @@ class LaravelInvites
     {
         $invite = Invite::create($this->data);
 
-        if($invite->email && config('laravelinvites.mail.enabled', true))
+        if ($invite->email && config('laravelinvites.mail.enabled', true))
             Mail::to($invite->email)->send(new InvitationMail($invite));
 
         return $invite;
@@ -118,12 +118,12 @@ class LaravelInvites
      */
     private function prepare()
     {
-        if($this->number_of_invites == 1)
+        if ($this->number_of_invites == 1)
             return $this->prepareSingle();
 
         $invites = [];
 
-        for($i = 0; $i < $this->number_of_invites; $i++)
+        for ($i = 0; $i < $this->number_of_invites; $i++)
         {
             $invites[] = $this->prepareSingle();
         }
@@ -140,16 +140,16 @@ class LaravelInvites
      */
     private function validateEmailBeforeGeneration($number_of_invites = 1)
     {
-        if(optional($this->data)['email'] && !blank($this->data['email']))
+        if (optional($this->data)['email'] && !blank($this->data['email']))
         {
-            if($number_of_invites > 1)
+            if ($number_of_invites > 1)
                 throw new AnEmailCanHaveOnlyOneInvitation;
 
-            $validator = Validator::make($this->data,[
+            $validator = Validator::make($this->data, [
                 'email'=>'unique:'.config('laravelinvites.table').',email'
             ]);
 
-            if($validator->fails())
+            if ($validator->fails())
                 throw new AnEmailCanHaveOnlyOneInvitation;
         }
     }
@@ -167,7 +167,7 @@ class LaravelInvites
 
         $this->number_of_invites = $number_of_invites;
 
-        $invitations =  $this->prepare();
+        $invitations = $this->prepare();
         
         $this->initializeData();
 
@@ -247,7 +247,7 @@ class LaravelInvites
      */
     private function getEmailParameter($parameters)
     {
-        return $parameters[0] ? : 'email' ;
+        return $parameters[0] ?: 'email';
     }
     
     /**
@@ -273,27 +273,27 @@ class LaravelInvites
             $this->check($value, $email);
             return true;
         }
-        catch(InvalidInvitationCodeException $e)
+        catch (InvalidInvitationCodeException $e)
         {
             $validator->errors()->add($emailFieldName, ':attribute is invalid');
             return false;
         }
-        catch(InvitationNotYetActiveException $e)
+        catch (InvitationNotYetActiveException $e)
         {
             $validator->errors()->add($emailFieldName, ':attribute is not valid yet');
             return false;
         }
-        catch(InvitationExpiredException $e)
+        catch (InvitationExpiredException $e)
         {
             $validator->errors()->add($emailFieldName, ':attribute expired');
             return false;
         }
-        catch(InvitationNotValidWithEmailException $e)
+        catch (InvitationNotValidWithEmailException $e)
         {
             $validator->errors()->add($emailFieldName, ':attribute is not valid with the provided '.$emailFieldName);
             return false;
         }
-        catch(MaximumUseOfCodeException $e)
+        catch (MaximumUseOfCodeException $e)
         {
             $validator->errors()->add($emailFieldName, ':attribute has been used for the maximum possible times');
             return false;
@@ -317,7 +317,7 @@ class LaravelInvites
 
             return true;
         }
-        catch(LaravelInvitesException $e)
+        catch (LaravelInvitesException $e)
         {
             return false;
         }
@@ -331,23 +331,23 @@ class LaravelInvites
      * 
      * @return boolean
      */
-    public function check($code, $email=null)
+    public function check($code, $email = null)
     {
         $invite = Invite::whereCode($code)->first();
 
-        if(!$invite)
+        if (!$invite)
             throw new InvalidInvitationCodeException;
         
-        if($invite->valid_from > now())
+        if ($invite->valid_from > now())
             throw new InvitationNotYetActiveException($invite->valid_from);
 
-        if($invite->valid_upto && $invite->valid_upto <= now())
+        if ($invite->valid_upto && $invite->valid_upto <= now())
             throw new InvitationExpiredException($invite->valid_upto);
 
-        if($invite->used_count > ($invite->allowed_count-1))
+        if ($invite->used_count > ($invite->allowed_count - 1))
             throw new MaximumUseOfCodeException($invite->allowed_count);
 
-        if($invite->email !== $email && !blank($invite->email))
+        if ($invite->email !== $email && !blank($invite->email))
             throw new InvitationNotValidWithEmailException($email, $invite->email);
 
         return true;

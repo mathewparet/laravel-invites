@@ -155,7 +155,7 @@ class LaravelInvites
     /**
      * Generate invitations
      * 
-     * @param intiger $number_of_invites | default = 1
+     * @param integer $number_of_invites | default = 1
      * 
      * @return mixed array of invitations generated
      */
@@ -203,7 +203,7 @@ class LaravelInvites
     /**
      * Set expiry to never expire
      * 
-     * @return reference to self
+     * @return \mathewparet\LaravelInvites\Facades\LaravelInvites
      */
     public function withoutExpiry()
     {
@@ -229,7 +229,7 @@ class LaravelInvites
      * 
      * @param string $code
      *
-     * @return \mathewparet\LaravelInvites\Model\Invite $invite
+     * @return \mathewparet\LaravelInvites\Models\Invite $invite
      */
     public function find($code)
     {

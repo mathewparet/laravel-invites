@@ -50,6 +50,6 @@ class InvitationMail extends Mailable
 
         return $this->markdown('laravelinvites::Mail/InvitationMailMarkdown')
             ->with(['invite' => $this->invite, 'url'=>$url])
-            ->subject(__(config('laravelinvites.mail.subject', ['app' => config('app.name')])));
+            ->subject(config('laravelinvites.mail.subject'));
     }
 }

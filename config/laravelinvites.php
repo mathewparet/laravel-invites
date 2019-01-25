@@ -93,10 +93,8 @@ return [
          * -----------------------------------------------
          * subject
          * -----------------------------------------------
-         * The subject of the invitation mail. :app will 
-         * be replaced by the Application Name as defined
-         * in config/app.php in your project route.
+         * The subject of the invitation mail. 
          */
-        'subject' => 'Your invitation to :app',
+        'subject' => 'You are invited!',
     ]
 ];

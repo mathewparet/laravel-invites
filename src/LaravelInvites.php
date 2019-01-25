@@ -32,7 +32,7 @@ class LaravelInvites
      */
     private function initializeData()
     {
-        $this->data = ['allow_count' => 1];
+        $this->data = ['allowed_count' => 1];
     }
 
     public function __construct()
@@ -142,7 +142,7 @@ class LaravelInvites
     {
         if (optional($this->data)['email'] && !blank($this->data['email']))
         {
-            if ($number_of_invites > 1)
+            if ($number_of_invites > 1 || $this->data['allowed_count'] > 1)
                 throw new AnEmailCanHaveOnlyOneInvitation;
 
             $validator = Validator::make($this->data, [

@@ -52,12 +52,15 @@ class GenerateInvitations extends Command
 
         try
         {
-            $invite = LaravelInvites::for ($email)->allow($allow);
+            $invite = LaravelInvites::for ($email) {
+                ->allow($allow);
+            }
 
-            if ($days)
-                $invite->setExpiry(now()->addDays($days));
-            else if ($hours)
-                $invite->setExpiry(now()->addHours($hours));
+            if ($days) {
+                            $invite->setExpiry(now()->addDays($days));
+            } else if ($hours) {
+                            $invite->setExpiry(now()->addHours($hours));
+            }
     
             $invite->generate($count);
     

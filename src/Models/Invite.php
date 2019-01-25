@@ -37,8 +37,9 @@ class Invite extends Model
     {
         $this->increment('used_count');
 
-        if ($this->used_count >= $this->allowed_count && config('laravelinvites.delete_on_full', true))
-            $this->delete();
+        if ($this->used_count >= $this->allowed_count && config('laravelinvites.delete_on_full', true)) {
+                    $this->delete();
+        }
     }
 
     public function scopeValid($query)
@@ -59,13 +60,14 @@ class Invite extends Model
      */
     private function setDefaultExpiry()
     {
-        if (config('laravelinvites.expiry.type') === 'none')
-            return null;
+        if (config('laravelinvites.expiry.type') === 'none') {
+                    return null;
+        }
         
-        if (config('laravelinvites.expiry.type') === 'hours')
-            return now()->addHours(config('laravelinvites.expiry.value'));
-            
-        elseif (config('laravelinvites.expiry.type') === "days")
-            return now()->addDays(config('laravelinvites.expiry.days'));
+        if (config('laravelinvites.expiry.type') === 'hours') {
+                    return now()->addHours(config('laravelinvites.expiry.value'));
+        } elseif (config('laravelinvites.expiry.type') === "days") {
+                    return now()->addDays(config('laravelinvites.expiry.days'));
+        }
     }
 }

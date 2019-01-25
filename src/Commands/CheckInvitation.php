@@ -47,8 +47,7 @@ class CheckInvitation extends Command
         try {
             LaravelInvites::check($code, $email);
             $this->info('This code is valid');
-        }
-        catch (LaravelInvitesException $e)
+        } catch (LaravelInvitesException $e)
         {
             $this->error($e->getMessage());
         }

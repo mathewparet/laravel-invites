@@ -9,7 +9,7 @@ class LaravelInvites extends Facade
     /**
      * @method mixed get() Get the invites from DB
      * @method \mathewparet\LaravelInvites\Facades\LaravelInvites for(string $email) Set the email property for generating or getting invitation
-     * @method \mathewparet\LaravelInvites\Facades\LaravelInvites validFrom(\Carbon\Carbon $date) Get the validity start date for the invitation
+     * @method \mathewparet\LaravelInvites\Facades\LaravelInvites validFrom(\Carbon\Carbon $date) Set the validity start date for the invitation
      * @method mixed generate(integer $number_of_invites = 1) Generate invitations
      * @method \mathewparet\LaravelInvites\Models\Invite generateFor(string $email) Generate invitations for a particular email
      * @method \mathewparet\LaravelInvites\Facades\LaravelInvites allow(integer $num_allowed = 1) Set the number of uses allowed for this invite
@@ -32,4 +32,5 @@ class LaravelInvites extends Facade
     {
         return 'laravelinvites';
     }
+
 }

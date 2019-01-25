@@ -46,8 +46,8 @@ class GenerateInvitations extends Command
         $email = $this->argument('email') ? : null;
         $allow = $this->option('allow');
         $count = $this->option('count');
-        $hours = $this->option('hours');
-        $days = $this->option('days');
+        $hours = (int) $this->option('hours');
+        $days = (int) $this->option('days');
 
         $invite = LaravelInvites::for($email)->allow($allow);
 
@@ -56,7 +56,7 @@ class GenerateInvitations extends Command
         else if($hours)
             $invite->setExpiry(now()->addHours($hours));
 
-        $invites = $invite->generate($count);
+        $invite->generate($count);
 
         $this->info($count." invitations generated.");
     }

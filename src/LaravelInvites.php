@@ -111,13 +111,11 @@ class LaravelInvites
     }
 
     /**
-     * Generate invitations
+     * Validate email ID before generating invitation code
      * 
-     * @param intiger $number_of_invites | default = 1
-     * 
-     * @return mixed array of invitations generated
+     * @throws \mathewparet\LaravelInvites\Exceptions\AnEmailCanHaveOnlyOneInvitation
      */
-    public function generate($number_of_invites = 1)
+    private function validateEmailBeforeGeneration()
     {
         if(optional($this->data)['email'] && !blank($this->data['email']))
         {
@@ -131,6 +129,18 @@ class LaravelInvites
             if($validator->fails())
                 throw new AnEmailCanHaveOnlyOneInvitation;
         }
+    }
+
+    /**
+     * Generate invitations
+     * 
+     * @param intiger $number_of_invites | default = 1
+     * 
+     * @return mixed array of invitations generated
+     */
+    public function generate($number_of_invites = 1)
+    {
+        $this->validateEmailBeforeGeneration();
 
         $this->number_of_invites = $number_of_invites;
 

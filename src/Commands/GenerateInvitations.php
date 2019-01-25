@@ -3,6 +3,7 @@
 namespace mathewparet\LaravelInvites\Commands;
 
 use mathewparet\LaravelInvites\Facades\LaravelInvites;
+use mathewparet\LaravelInvites\Exceptions\LaravelInvitesException;
 
 use Illuminate\Console\Command;
 
@@ -43,21 +44,28 @@ class GenerateInvitations extends Command
      */
     public function handle()
     {
-        $email = $this->argument('email') ? : null;
+        $email = $this->argument('email') ?: null;
         $allow = $this->option('allow');
         $count = $this->option('count');
-        $hours = $this->option('hours');
-        $days = $this->option('days');
+        $hours = (int) $this->option('hours');
+        $days = (int) $this->option('days');
 
-        $invite = LaravelInvites::for($email)->allow($allow);
+        try
+        {
+            $invite = LaravelInvites::for($email)->allow($allow);
 
-        if($days)
-            $invite->setExpiry(now()->addDays($days));
-        else if($hours)
-            $invite->setExpiry(now()->addHours($hours));
-
-        $invites = $invite->generate($count);
-
-        $this->info($count." invitations generated.");
+            if ($days) {
+                            $invite->setExpiry(now()->addDays($days));
+            } else if ($hours) {
+                            $invite->setExpiry(now()->addHours($hours));
+            }
+    
+            $invite->generate($count);
+    
+            $this->info($count." invitations generated.");                
+        } catch (\Exception $e)
+        {
+            $this->error($e->getMessage());
+        }
     }
 }

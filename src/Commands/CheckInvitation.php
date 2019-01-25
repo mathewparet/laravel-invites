@@ -41,14 +41,13 @@ class CheckInvitation extends Command
      */
     public function handle()
     {
-        $email = $this->argument('email') ? : null;
+        $email = $this->argument('email') ?: null;
         $code = $this->argument('code');
 
         try {
             LaravelInvites::check($code, $email);
             $this->info('This code is valid');
-        }
-        catch(LaravelInvitesException $e)
+        } catch (LaravelInvitesException $e)
         {
             $this->error($e->getMessage());
         }

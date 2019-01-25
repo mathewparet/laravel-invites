@@ -41,6 +41,6 @@ class Cleanup extends Command
     {
         $count = Invite::useless()->count();
         Invite::useless()->delete();
-        $this->info('Removed '.$count.' unusabled invitation codes');
+        $this->info('Removed './** @scrutinizer ignore-type */ $count.' unusabled invitation codes');
     }
 }

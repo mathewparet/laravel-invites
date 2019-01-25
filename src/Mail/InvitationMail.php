@@ -39,17 +39,16 @@ class InvitationMail extends Mailable
             'code' => (string) $this->invite->code
         ];
 
-        if($this->invite->valid_upto)
+        if ($this->invite->valid_upto)
         {
             $url = URL::temporarySignedRoute('laravelinvites.routes.follow', $this->invite->valid_upto, $data);
-        }
-        else
+        } else
         {
             $url = URL::signedRoute('laravelinvites.routes.follow', $data);
         }
 
         return $this->markdown('laravelinvites::Mail/InvitationMailMarkdown')
             ->with(['invite' => $this->invite, 'url'=>$url])
-            ->subject(__(config('laravelinvites.mail.subject', ['app' => config('app.name')])));
+            ->subject(config('laravelinvites.mail.subject'));
     }
 }

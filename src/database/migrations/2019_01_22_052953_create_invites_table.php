@@ -13,7 +13,7 @@ class CreateInvitesTable extends Migration
      */
     public function up()
     {
-        Schema::create(config('laravelinvites.table'), function (Blueprint $table) {
+        Schema::create(config('laravelinvites.table'), function(Blueprint $table) {
             $table->increments('id');
             $table->string('email')->nullable()->unique();
             $table->string('code')->unique();

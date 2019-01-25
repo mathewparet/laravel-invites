@@ -39,11 +39,10 @@ class InvitationMail extends Mailable
             'code' => (string) $this->invite->code
         ];
 
-        if($this->invite->valid_upto)
+        if ($this->invite->valid_upto)
         {
             $url = URL::temporarySignedRoute('laravelinvites.routes.follow', $this->invite->valid_upto, $data);
-        }
-        else
+        } else
         {
             $url = URL::signedRoute('laravelinvites.routes.follow', $data);
         }

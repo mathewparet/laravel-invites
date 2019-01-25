@@ -4,7 +4,7 @@ namespace mathewparet\LaravelInvites\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Http\Controllers\Controller;
+use mathewparet\LaravelInvites\Http\Controllers\Controller;
 
 use mathewparet\LaravelInvites\Facades\LaravelInvites;
 

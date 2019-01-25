@@ -273,8 +273,9 @@ class LaravelInvites
     {
         $emailFieldName = $this->getEmailParameter($parameters);
 
-        try {        
-            $email = $validator->data[$emailFieldName];
+        try {
+            $validator_data = $validator->getData();
+            $email = $validator_data[$emailFieldName];
 
             $this->check($value, $email);
             return true;
